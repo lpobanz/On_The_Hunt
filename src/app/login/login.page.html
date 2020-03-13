@@ -1,0 +1,68 @@
+ <!-- <ion-header >
+        <ion-toolbar >
+          <ion-title class="head">Login</ion-title>
+        </ion-toolbar>
+      </ion-header> -->
+<ion-content  > 
+
+       
+    
+    
+    <body class="bodyImg" >
+        <div class="head">
+          
+            <h1 class="lbl"> Login</h1>
+        </div>
+        
+
+
+
+<!-- shows title card if there is a user currently signed in -->
+<section *ngIf="(afAuth.user | async) as user; else loginItems"> 
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="email">{{ user.email }}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <body>
+  <button class="JoinBtn" (click)="joinBtnClick()" > Join Game </button>
+
+ <button class="NewGameBtn" (click)="createBtnClick()"> Create Game </button>
+ <button (click)="logout()">Logout</button> 
+</body>
+
+</section>
+
+
+<section>
+
+
+<ng-template #loginItems>
+<label for="uname"><b>Email</b></label>
+<!-- reads the user email -->
+<input type="text" placeholder="Enter Your Email" name="uname" [(ngModel)]="user.email" required>
+
+<label for="psw"><b>Password</b></label>
+<!-- reads the user's password -->
+<input type="password" placeholder="Enter Password" name="psw" [(ngModel)]="user.password" required>
+<ion-button (click)="createAccount()">Register</ion-button>
+<ion-button (click)="login()">Login</ion-button>
+
+<div id="errorDiv" class="errorDiv">
+    <ion-label class="errorLbl" >Register with a valid email and a password longer then 7 characters</ion-label>
+</div>
+<div id="signinDiv" class="errorDiv">
+    <ion-label class="errorLbl" >Sign in with an account that is already registered or register a new account</ion-label>
+</div>
+
+
+</ng-template>
+
+</section>
+
+</body>
+
+
+
+</ion-content>

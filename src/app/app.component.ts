@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,8 @@ export class AppComponent {
     private statusBar: StatusBar
   ) {
     this.initializeApp();
+    //locks screen orientation on mobile devices, kicks error when ran in browser 
+    ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.PORTRAIT);
   }
 
   initializeApp() {

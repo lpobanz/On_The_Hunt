@@ -1,0 +1,94 @@
+
+
+<ion-header>
+  <ion-toolbar class="head">
+
+    <!-- menu button  -->
+    <span class="menuBtn" (click)="openNav()">&#9776;</span>
+      
+
+    
+
+    
+    <ion-title class="titl ion-text-wrap">{{ gameName }}</ion-title> 
+
+    
+    <ion-label class="scoreLbl"><ion-icon name="ribbon" class="scoreIcon"></ion-icon>{{userScore}}</ion-label>
+    
+   
+    
+  </ion-toolbar>
+</ion-header>
+
+
+<!-- side navigation code  -->
+<div id="mySidenav" class="sidenav">
+    <a class="closebtn" (click)="closeNav()">&times;</a>
+    <img class="logo" src="assets/img/titleImage.png" alt="On The Hunt Logo">
+
+
+    <br>
+    <div class="userDiv">
+    <ion-label class="userLbl">{{ userEmail }} </ion-label>
+    </div>
+    <ion-button class="scoreBtn" (click)="scoreBtnClick()"> <ion-icon name="trophy" class="icon"></ion-icon> Scoreboard </ion-button> 
+   
+    <ion-button class="chatBtn" (click)= "chatBtnClick()"> <ion-icon name="text" class="icon"></ion-icon> Game Chat </ion-button>
+    <ion-button class="chatBtn" (click)="leaveBtnClick()"> <ion-icon name="undo" class="icon"></ion-icon> Leave Game </ion-button>
+
+</div>
+<div id="screenCover" class="screen">
+  
+</div>
+
+
+<ion-content >
+<body class="back">
+<div class="bdy">
+
+  <!-- displays map -->
+  <div #map id="map"> </div>
+  
+
+
+  <div class="objDiv">
+
+  
+   
+  <ion-label class="objLbl" >Objectives</ion-label>
+ 
+  </div>
+</div>
+
+
+
+  <div class="objCont">
+    <br>
+    <!-- displays the list of objectives -->
+    <ion-list >
+        <ion-item lines="none"  class="itm" *ngFor="let item of objectivesList">
+          <ion-card class="itemCard">
+            <ion-card-header>
+              <ion-card-title style="font-size: 20px; " class="ion-text-wrap" >{{item.Name}} </ion-card-title>
+              
+              <a class="lnk" *ngIf="item.Link != undefined && item.Link != '' " href={{item.Link}}> Location Website</a>
+              <ion-button class="compBtn" (click)="completeBtnClick(item.Name, item.Lat, item.Lng)">Complete</ion-button>
+            
+            </ion-card-header>
+            
+          </ion-card>
+          
+        </ion-item>
+      </ion-list> 
+    </div>
+
+  </body>
+</ion-content>
+
+
+
+    
+
+
+
+

@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Create Objectives</ion-title>
+    <ion-button class="backBtn" (click) = "backBtnClick()"> Back to Login</ion-button>
+    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <div class="objCont" >
+        <ion-list *ngFor="let item of objList" >
+            <ion-item class="itm">
+              <ion-label class="ion-text-wrap">{{item.Name}}</ion-label>
+              
+              <ion-button (click)="deleteBtnClick(item.ID)"> Delete </ion-button>
+            </ion-item>
+        </ion-list> 
+      </div>
+        
+      <div class="cont">
+      <input type="text" placeholder="Enter The Objective Name" name="message" [(ngModel)]= "page.Name" required> 
+      <input type="text" placeholder="Enter Optional Link to location's website" name="message" [(ngModel)]= "page.Link" required> 
+      <input type="text" placeholder="Enter Objective's Latitude" name="message" [(ngModel)]= "page.Lat" required>  
+      <!-- [(ngModel)]= "game.Message" -->
+      <input type="text" placeholder="Enter Objective's Longitude" name="message" [(ngModel)]= "page.Lng" required>  
+      <ion-button class="subBtn" (click)="sendSetLocClick()" >Add Objective With input Cordinates</ion-button>
+      <ion-button class="subBtn" (click)="sendUserLocClick()" >Add Objective With Your Current Location</ion-button>
+      
+      </div>
+
+</ion-content>

@@ -1,0 +1,42 @@
+.email{
+    font-size: 20px;
+
+}
+
+.itemCard{
+    width: calc(100% - 20px);
+    padding: 10px;
+    background-color: white;
+}
+.search{
+    color: white;
+}
+.head{
+    background-color: rgb(173, 157, 143); // #5a5b61de
+    color:  white;
+    font-weight: bold;
+    font-size: 20px;
+}
+   
+
+.joinBtn {
+    margin-top: 15px;
+    margin-left: calc(100% - 70px);
+}
+.bod{
+    overflow: scroll;
+    //background-color: #e6ffee;
+    background-color: #ec944b;
+}
+ion-item {
+   
+    --ion-background-color: #ec944b;
+  
+    
+  }
+.joinBtn {
+    --background: #e98534;
+}
+
+
+

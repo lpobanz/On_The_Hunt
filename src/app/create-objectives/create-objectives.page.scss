@@ -1,0 +1,53 @@
+input[type=text] , input[type=password]  {
+    
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid rgb(122, 122, 122);
+    box-sizing: border-box;
+  }
+.itm {
+    display: block;
+
+    
+
+}
+
+.objCont {
+    position: fixed;
+    height: calc(100% - 320px);
+    overflow: scroll;
+    width: 100%;
+}
+.content {
+    --overflow: hidden;
+    
+
+    
+}
+.cont {
+//height: 110px;
+position: fixed;
+width: 100%;
+bottom: 0%;
+}
+.subBtn {
+
+    
+    margin-top: 5px;
+    width: calc(50% - 5px);
+    font-size: 14px;
+    white-space: normal
+  
+}
+.backBtn {
+    position: absolute;
+    right: 5px;
+    top: 4px;
+    height: 30px;
+    width: 94px;
+    font-size: 14px;
+    
+    
+}

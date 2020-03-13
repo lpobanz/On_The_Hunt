@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar class="head">
+      <!-- sets name to specific game name variable -->
+    <ion-title text-wrap class="titl">{{gameName}} Chat</ion-title>
+    <ion-button class="backBtn" (click) = "backBtnClick()"> Back</ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-content class="chatCont" id="content" #content>
+  
+    <!-- displays email and message for each item of the list of chat messages -->
+    <ion-list>
+        <ion-item lines="none"  class="itm" *ngFor="let item of chatList" >
+          
+           <ion-card class="userItemCard" *ngIf="item.Email == this.user" >
+            <ion-card-header>
+                <ion-card-title text-wrap style="font-size: 18px" class="userEmail">{{item.Email}}</ion-card-title>
+              
+              
+                  <ion-label text-wrap class="userLbl">{{item.Message}}</ion-label>
+                  <ion-button class="dltBtn"  (click)="deleteBtnClick(item.ID)"> Delete </ion-button>
+              
+            </ion-card-header>
+          </ion-card>
+        
+        
+            <ion-card *ngIf="item.Email != this.user" class="itemCard" >
+             <ion-card-header>
+                 <ion-card-title text-wrap style="font-size: 18px" class="email">{{item.Email}}</ion-card-title>
+               
+               
+                   <ion-label text-wrap class="lbl" >{{item.Message}}</ion-label>
+             </ion-card-header>
+           </ion-card>
+         
+
+        </ion-item>
+    </ion-list> 
+  
+  </ion-content>
+    
+  <div class="cont">
+  <input type="text" placeholder="Enter Message" name="message" [(ngModel)]= "game.Message" required>
+  <ion-button expand="full" class="subBtn" (click)="sendBtnClick()" >Send Message</ion-button>
+  </div>
+</ion-content>
+
+
+

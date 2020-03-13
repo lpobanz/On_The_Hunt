@@ -1,0 +1,43 @@
+<ion-header>
+    <ion-toolbar class="head">
+        <ion-button class="backBtn" (click) = "backBtnClick()"> Back</ion-button>
+      <ion-title class="titl" >{{gameName}} Scoreboard</ion-title>
+      <!-- sets title to game name varible value -->
+     
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content class="chatCont" >
+    
+    <div>
+      <!-- displays each item of scorelist to ion-list -->
+      <ion-list lines="none" >
+          <ion-item  class="itm ion-no-padding" *ngFor="let item of scoreList" >
+            
+            <!-- sets each item name label and score to specific element of scorelist -->
+
+            <!-- <ion-card class="itemCard">
+              <ion-card-header>
+              <ion-label text-wrap class="emailLbl">{{item.Email}}</ion-label>
+              
+              <ion-label class="ion-text-wrap">Score is {{item.Score}}</ion-label> 
+          </ion-card-header>
+          </ion-card> -->
+         
+          <div class="back" [ngStyle]="calcWidth(item)">
+          
+            
+          </div>
+          <div class="cont">
+            <ion-icon [ngStyle]="calcPlace()" class="troph" name="trophy"></ion-icon>
+              <ion-label class="lbl ion-text-wrap">{{item.Email}}</ion-label>
+              <ion-icon class="icon" name="ribbon"></ion-icon>
+              <ion-label class="score">{{item.Score}}</ion-label>
+          </div>
+
+
+          </ion-item>
+      </ion-list> 
+    </div>
+      
+</ion-content>

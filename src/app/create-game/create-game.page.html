@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar class="head">
+    <ion-title>Create Game</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  <div class="body">
+  <br>
+
+    <label for="uname"><b>Game Name</b></label>
+    <input type="text" placeholder="Enter The Name of The Game" name="uname"  [(ngModel)]= "game.Name"required>
+    
+    <label for="Location"><b>Location</b></label>
+    <input type="text" placeholder="Enter The Game's Location" name="location" [(ngModel)]= "game.Location"required>
+
+    
+    <label for="Location"><b>Game Password</b></label>
+    <ion-checkbox class="passBox"></ion-checkbox>
+    <input type="text" placeholder="Enter An Optional Game Password" name="location" [(ngModel)]= "h"required>
+    
+
+    <ion-label> The distance in meters to complete an objective: </ion-label>
+    <ion-input placeholder=" default distance is 1000" type="number" (focusout)="inputCheck()" [(ngModel)]="data.distance" required></ion-input>
+    <ion-item class="itm">
+    <ion-range min="50" max="5000" pin="true" step="50" snaps="true" ticks="false" value="1000" [(ngModel)]="data.distance">
+        <ion-label slot="start">50m</ion-label>
+        <ion-label slot="end">5000m</ion-label>
+    </ion-range>
+   </ion-item>
+
+    <ion-button (click)="createBtnClick()"> Create Game</ion-button>
+    
+  </div>
+</ion-content>
+

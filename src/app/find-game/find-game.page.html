@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="head">Find Game</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  <body class="bod">
+<ion-searchbar showcancelbutton="" class="search" (ionInput)="filterList($event)"></ion-searchbar>
+
+
+<ion-list >
+    
+    <ion-item *ngFor="let item of gameList"> 
+      <!-- displays the name andf location for each item in the game list -->
+
+      <!-- <ion-label class="ion-text-wrap">{{ item.Name }}</ion-label>
+      <ion-label class="ion-text-wrap">{{ item.Location }}</ion-label>
+      <ion-button class = "joinBtn" (click)="joinGameClk(item.Name, item.ID)" > Join Game</ion-button>
+       -->
+      
+       <ion-card class="itemCard">
+          <ion-card-header>
+            <ion-card-title class="email ion-text-wrap">{{ item.Name}}</ion-card-title>
+            <ion-label class="ion-text-wrap" >Location: {{ item.Location }}</ion-label>
+            <ion-button class = "joinBtn" (click)="joinGameClk(item.Name, item.ID)" > Join Game</ion-button>
+          </ion-card-header>
+      </ion-card>
+    
+
+    </ion-item>
+ 
+  </ion-list> 
+
+</body>
+
+</ion-content>

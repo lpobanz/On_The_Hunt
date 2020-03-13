@@ -1,0 +1,47 @@
+input[type=text] , input[type=password]  {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+   // box-sizing: border-box;
+    border-radius: 20px;
+    background-color: rgba(151, 149, 149, 0.514); // rgb(243, 237, 237);
+    
+    
+  }
+  .itm{ 
+      --background: rgba(204, 204, 204, 0); //#ec944b;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+  }
+
+  .head{
+      color:#ec6e06;
+      font-weight: bold;
+      font-size: 36px;
+  }
+  label{
+      color: white;
+  }
+  .body{
+      position: absolute;
+      background-color: #ec944b;// #d8ccc2 ;
+      height: 100%;
+      background-image: linear-gradient(  #eeb88b, #ff7301); 
+      text-align: center;
+  }
+
+  span.psw {
+    float: right;
+    padding-top: 16px;
+  }
+
+  .passBox{
+      position: absolute;
+      right: 5px;
+      margin-top: -5px;
+      margin-bottom: -5px;
+      margin-right: 0px;
+
+  }

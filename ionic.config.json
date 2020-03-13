@@ -1,5 +1,9 @@
 {
   "name": "On_The_Hunt",
-  "integrations": {},
-  "type": "angular"
+  "integrations": {
+    "cordova": {},
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "4447be00"
 }

@@ -1,1 +1,51 @@
+body {
+    background-position: center;
 
+    background: url("../../assets/img/City_Background.JPG");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: #5a5b618a;
+
+    background-blend-mode: multiply;
+    //background: linear-gradient(rgba(249, 119, 76,.75), rgba(128, 42, 12,.85));
+}
+
+ion-toolbar{
+    --background: #4a4d58;
+    --color: #ffffff;
+}
+
+Button {
+    background-color: #3663f8; /* Green */
+    border-radius: 30px;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px;
+    margin-right: 10px;
+  }
+img {
+    
+    
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  margin-top: 25%;
+}
+
+.loginBtn {
+    position: absolute;
+    top: 75%;
+    width: calc(100% - 20px);
+    clear: both;
+}
+.infoBtn{
+    position: absolute;
+    top: calc(75% - 60px);
+    width: calc(100% - 20px);
+    clear: both;
+}

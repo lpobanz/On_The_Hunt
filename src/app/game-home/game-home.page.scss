@@ -11,24 +11,22 @@
 }
 
 .scoreIcon{
-    position: absolute;
+
+    position: relative;
     top: 4px;
-    left: 5px;
+    right: 0px;
+  // font-size: 26px;
 
 }
+.scoreLbl{
 
-.scoreLbl {
-    text-align: right;
     font-weight: bolder;
-    position: absolute;
-    padding-left: 5px;
-    padding:0;
-    right: 5px;
-    top: 20%;
+    font-size: 26px;
     color:#f37d1c;
-    font-size: 24px;
-    width:60px;
-    //border: 1px solid #f37d1c ;
+    position: absolute;
+    text-align: right;
+    right: 5px;
+    top: 10px;
     
 }
 

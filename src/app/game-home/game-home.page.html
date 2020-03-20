@@ -12,9 +12,9 @@
     
     <ion-title class="titl ion-text-wrap">{{ gameName }}</ion-title> 
 
+   
     
-    <ion-label class="scoreLbl"><ion-icon name="ribbon" class="scoreIcon"></ion-icon>{{userScore}}</ion-label>
-    
+    <label class="scoreLbl">  <ion-icon name="ribbon" class="scoreIcon"></ion-icon>{{userScore}}</label>
    
     
   </ion-toolbar>
@@ -34,7 +34,9 @@
     <ion-button class="scoreBtn" (click)="scoreBtnClick()"> <ion-icon name="trophy" class="icon"></ion-icon> Scoreboard </ion-button> 
    
     <ion-button class="chatBtn" (click)= "chatBtnClick()"> <ion-icon name="text" class="icon"></ion-icon> Game Chat </ion-button>
+    <!-- <ion-button  class="chatBtn" (click)="showRadius()"><ion-icon name="circle" class="icon"></ion-icon> Toggle Radius</ion-button> -->
     <ion-button class="chatBtn" (click)="leaveBtnClick()"> <ion-icon name="undo" class="icon"></ion-icon> Leave Game </ion-button>
+    
 
 </div>
 <div id="screenCover" class="screen">

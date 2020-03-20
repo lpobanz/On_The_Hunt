@@ -34,7 +34,6 @@ export class GameHomePage implements OnInit {
   public userScore : any;
   userEmail : string;
   public objectivesList: any[];
-  test: any;
   userList: any[];
   userExists: boolean;
   objExists: boolean;
@@ -44,6 +43,7 @@ export class GameHomePage implements OnInit {
   objList: any[]; 
   zoom: any;
 
+  userMarker: any;
 
 
   // adding map 
@@ -68,6 +68,8 @@ export class GameHomePage implements OnInit {
     this.gameName = state.name;
     this.gameId = state.ID;
     } catch {
+
+      // send back to find game 
       this.gameName = "Error";
       this.gameId = "jKYNMktYB2gyPomrVpFZ";
     }
@@ -78,6 +80,8 @@ export class GameHomePage implements OnInit {
       this.userEmail = afAuth.auth.currentUser.email;
       this.userId = afAuth.auth.currentUser.uid; // here 
     } else {
+
+      //send to login page 
       this.userEmail = "no Email";
       this.userId = "NlciFleq4i5wRWoeDd2D"; // give it a test case
     }
@@ -85,6 +89,25 @@ export class GameHomePage implements OnInit {
 
   
     
+
+    // gets the list of objectives
+    this.firestore.collection('Games').doc(this.gameId).collection('Objectives').snapshotChanges().subscribe(data => {
+      
+      this.objectivesList = data.map(e => {
+        console.dir(e.payload.doc.data()['Name'])
+        return {
+          Name: e.payload.doc.data()['Name'],
+          Link: e.payload.doc.data()['Link'],
+          Lat: e.payload.doc.data()['Lat'],
+          Lng: e.payload.doc.data()['Lng']
+        }
+      })
+
+      //this.displayObj()
+
+      
+
+    }) 
 
     // watches and logs the current user position 
     geolocation.watchPosition().subscribe((position) => {
@@ -103,7 +126,10 @@ export class GameHomePage implements OnInit {
       this.userLng = position.coords.longitude;
       console.log("position is " + this.userLat + " "  + this.userLng)
       
-      this.displayUser(); // displays user location]
+     // this.displayUserInit(); // displays user location]
+     
+     this.updateUser();
+      
       }
      
       
@@ -125,7 +151,7 @@ export class GameHomePage implements OnInit {
   
 
     
-    let latLng = new google.maps.LatLng(this.userLat, this.userLng);
+    let latLng = new google.maps.LatLng(0,0);
     
  
     let mapOptions = {
@@ -135,7 +161,7 @@ export class GameHomePage implements OnInit {
     };
  
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-    this.displayUser() // displays the user on the map
+    this.displayUserInit() // displays the user on the map
     
 
 
@@ -146,24 +172,28 @@ export class GameHomePage implements OnInit {
     //let 
   }
 
-  displayUser() {
+  updateUser(){
+    let position = new google.maps.LatLng(this.userLat, this.userLng);
+    if(this.userMarker != undefined){
+     this.userMarker.setPosition(position);
+    } else {
+      this.displayUserInit();
+    }
+  }
+
+  displayUserInit() {
     console.log("display user ran");
-    if (this.map != undefined) {
+    if (this.userLat != undefined && this.userLng != undefined && this.map != undefined) {
       // display user on map
     let position = new google.maps.LatLng(this.userLat, this.userLng);
     this.map.setCenter(position);
     this.map.setZoom(this.zoom); // default is 11 
+    
 
-    // adding marker to map
-    this.markers.map(marker => marker.setMap(null));
-    this.markers = [];
-
-    let latLng = new google.maps.LatLng(this.userLat, this.userLng);
-
-    let marker = new google.maps.Marker({
+    this.userMarker = new google.maps.Marker({
       map: this.map,
       animation: null, //google.maps.Animation.DROP,
-      position: latLng,
+      position: position,
       title: this.userEmail,
       icon: {
         path: google.maps.SymbolPath.CIRCLE,
@@ -171,14 +201,14 @@ export class GameHomePage implements OnInit {
         scale: 6
     }
     });
-    this.markers.push(marker);
-    this.displayObj() // displays the objectives on the map
+    this.markers.push(this.userMarker);
+     // displays the objectives on the map
     console.log("zoom is " + this.map.getZoom())
  
 
     } else {
       console.log("no location")
-      setTimeout(this.displayUser, 250);
+      setTimeout(this.displayUserInit, 250);
     }
 
     
@@ -187,26 +217,18 @@ export class GameHomePage implements OnInit {
   displayObj(){
     //displays the objectives on the map
 
-    //retrieves the collection of objectives from google firebase
-    this.firestore.collection('Games').doc(this.gameId).collection('Objectives').snapshotChanges().subscribe(data => {
-
-      this.objList = data.map( e => {
-        return {
-          Name: e.payload.doc.data()['Name'],
-          Lat: e.payload.doc.data()['Lat'],
-          Lng: e.payload.doc.data()['Lng'],
-          Link: e.payload.doc.data()['Link']
-        }
-      })
-      console.log("this is obj list")
-      console.log(this.objList)
-
   
       // display marker for each location 
 
-      this.objList.forEach(element => {
+      this.objectivesList.forEach(element => {
         console.log(element)
         console.log("logged element")
+
+
+
+        if(this.completedObjList.some(({Name}) => Name === element['Name'])) {
+
+        } else{
 
        // adds marker 
         let latiLong = new google.maps.LatLng(element["Lat"], element['Lng']);
@@ -229,9 +251,10 @@ export class GameHomePage implements OnInit {
         console.log("markers")
         console.log(this.markers);
 
+      }
       });
 
-    })
+    //})
 
  
 
@@ -265,24 +288,18 @@ export class GameHomePage implements OnInit {
         this.userScore = data.data()["Score"]
       });
 
+      // gets completed objectives
+      this.firestore.collection('Games').doc(this.gameId).collection('Users').doc(this.userId).get().subscribe( data => {  //.snapshot changes
+      
+        this.completedObjList = data.data()["Objectives"] 
+        this.displayObj()
+  
+      })
+
+      
     })
 
 
-
-    // sets objective list 
-    this.firestore.collection('Games').doc(this.gameId).collection('Objectives').snapshotChanges().subscribe(data => {
-      
-      this.objectivesList = data.map(e => {
-        console.dir(e.payload.doc.data()['Name'])
-        return {
-          Name: e.payload.doc.data()['Name'],
-          Link: e.payload.doc.data()['Link'],
-          Lat: e.payload.doc.data()['Lat'],
-          Lng: e.payload.doc.data()['Lng']
-        }
-      })
-
-    }) 
 
 
 
@@ -305,10 +322,8 @@ export class GameHomePage implements OnInit {
 
     } else {
       //if a user exists connect them to their account
-      let test = this.userEmail
-      console.log("this is a big ol" + test)
 
-      let aTest = this.userList.find(obj => {
+      let user = this.userList.find(obj => {
         if(obj.Email === this.userEmail) {
           console.log("ran 12")
           return obj
@@ -316,8 +331,8 @@ export class GameHomePage implements OnInit {
           return
         }
       })
-      console.log("user is " + aTest["ID"])
-      this.userId = aTest["ID"]
+      console.log("user is " + user["ID"])
+      this.userId = user["ID"]
          
 
     }
@@ -353,13 +368,7 @@ export class GameHomePage implements OnInit {
 
    
     // retrieves object list from firebase
-    this.firestore.collection('Games').doc(this.gameId).collection('Users').doc(this.userId).get().subscribe( data => {  //.snapshot changes
-      
-      this.completedObjList = data.data()["Objectives"] 
-     
-     
 
-    })
 
     // check for distance here
     console.log("this is the distance")

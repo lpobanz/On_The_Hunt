@@ -6,7 +6,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Injectable } from '@angular/core';
 import { firestore } from 'firebase';
 import { IonContent } from '@ionic/angular';
-
+import { NavController} from '@ionic/angular';
 
 
 
@@ -48,30 +48,72 @@ export class ChatPage implements OnInit {
 
  
 
-  constructor(private router: Router, private firestore: AngularFirestore, public afAuth: AngularFireAuth) { 
+  constructor(private router: Router, private firestore: AngularFirestore, public afAuth: AngularFireAuth, private navCtrl: NavController) { 
     
 
-// gets current user email and catches if there is not a current user 
-  if(afAuth.auth.currentUser != null) {
-  this.user = afAuth.auth.currentUser.email;
-  } else {
-  this.user = "No Email";
-  }
-  console.log(this.user);
-
-    // gets name and ID from previous page
     const navigation = this.router.getCurrentNavigation();
     const state = navigation.extras.state as {
       name: string;
       ID : string;
     };
-    try{
-      this.gameName = state.name;
-      this.gameId = state.ID;
-    } catch { // catches if page didn't recieve variables from other page
-      this.gameName = "Error";
-      this.gameId = "jKYNMktYB2gyPomrVpFZ";
+
+// gets current user email and catches if there is not a current user 
+  // if(afAuth.auth.currentUser != null) {
+  // this.user = afAuth.auth.currentUser.email;
+  // } else {
+  // this.user = "No Email";
+  // }
+  // console.log(this.user);
+
+  //   // gets name and ID from previous page
+  //   const navigation = this.router.getCurrentNavigation();
+  //   const state = navigation.extras.state as {
+  //     name: string;
+  //     ID : string;
+  //   };
+  //   try{
+  //     this.gameName = state.name;
+  //     this.gameId = state.ID;
+  //   } catch { // catches if page didn't recieve variables from other page
+  //     this.gameName = "Error";
+  //     this.gameId = "jKYNMktYB2gyPomrVpFZ";
+  //   }
+
+  try{
+    this.gameName = state.name;
+    this.gameId = state.ID;
+
+    console.log('try ran');
+    localStorage.setItem('gameName', this.gameName);
+    localStorage.setItem('gameId', this.gameId);
+  } catch (e){
+    
+
+    if(localStorage.getItem('gameName') != null && localStorage.getItem('gameId') != null) {
+
+      this.gameName = localStorage.getItem('gameName');
+      this.gameId = localStorage.getItem('gameId');
+    } else {
+      this.router.navigate(["find-game"]);
     }
+  }
+  console.log("Game Name is " + this.gameName); 
+
+  // checks to see if user is currently signed in and then gets their email and id
+  if(afAuth.auth.currentUser != null) {
+    this.user = afAuth.auth.currentUser.email;
+    
+
+    localStorage.setItem('userEmail', this.user);
+   
+  } else if(localStorage.getItem('userEmail') != null && localStorage.getItem('userID') != null) {
+    this.user = localStorage.getItem('userEmail');
+    
+  } else {
+    this.router.navigate(["login"]);
+
+  }
+  console.log("this is email " + this.user);
 
 
 
@@ -132,8 +174,8 @@ export class ChatPage implements OnInit {
 
   //navigates to game home page on btn click 
   backBtnClick() {
-    this.router.navigate(['game-home']);
-    
+    //this.router.navigate(['game-home']);
+    this.navCtrl.navigateRoot(['game-home'], {animationDirection:'forward', state: {name: this.gameName, ID: this.gameId }});
   }
 
   // sends message on btn click

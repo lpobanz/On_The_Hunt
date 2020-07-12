@@ -12,12 +12,14 @@
     color: white;
 }
 .head{
-    background-color: rgb(173, 157, 143); // #5a5b61de
+    //background-color: rgb(173, 157, 143); // #5a5b61de
     color:  white;
     font-weight: bold;
     font-size: 20px;
 }
-   
+.banner {
+    --background: rgb(173, 157, 143);
+}
 
 .joinBtn {
     margin-top: 15px;
@@ -38,5 +40,17 @@ ion-item {
     --background: #e98534;
 }
 
-
+.cont {
+    --ion-background-color: #ec944b;
+}
+.backBtn {
+    position: absolute;
+    left: 5px;
+    top: 4px;
+    height: 30px;
+    width: 60px;
+    --background:  #ec944b;
+    
+    
+}
 

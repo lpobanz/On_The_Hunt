@@ -11,8 +11,9 @@
   <ion-content class="chatCont" id="content" #content>
   
     <!-- displays email and message for each item of the list of chat messages -->
-    <ion-list>
-        <ion-item lines="none"  class="itm" *ngFor="let item of chatList" >
+    <ion-list >
+      <!-- lines="none" -->
+        <ion-item  lines="none" class="itm" *ngFor="let item of chatList" >
           
            <ion-card class="userItemCard" *ngIf="item.Email == this.user" >
             <ion-card-header>

@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Router, NavigationExtras} from '@angular/router';
+import { Router, NavigationExtras, NavigationEnd} from '@angular/router';
+
+import {Platform} from '@ionic/angular';
+
 import { AngularFireAuth } from '@angular/fire/auth';
 
 //add firebase 
@@ -9,6 +12,10 @@ import { firestore } from 'firebase';
 
 // adds google map geolocation
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+
+// routing 
+import { NavController} from '@ionic/angular';
+
 
 declare var google;
 
@@ -53,7 +60,7 @@ export class GameHomePage implements OnInit {
   
   
 
-  constructor(private router: Router, private firestore: AngularFirestore,public afAuth: AngularFireAuth, private geolocation: Geolocation) {
+  constructor(private platform: Platform, private router: Router, private firestore: AngularFirestore,public afAuth: AngularFireAuth, private geolocation: Geolocation, private navCtrl: NavController) {
 
 
    // this.userScore = 0;
@@ -64,26 +71,68 @@ export class GameHomePage implements OnInit {
       name: string;
       ID : string;
     };
-    try{
-    this.gameName = state.name;
-    this.gameId = state.ID;
-    } catch {
 
-      // send back to find game 
-      this.gameName = "Error";
-      this.gameId = "jKYNMktYB2gyPomrVpFZ";
+    console.log("game page loaded ");
+
+
+    // if(state == undefined){ //state.name == undefined || state.ID == undefined
+
+    //   console.log('catch ran');
+  
+    //     if(localStorage.getItem('gameName') != null || localStorage.getItem('gameId') != null) {
+  
+    //       this.gameName = localStorage.getItem('gameName');
+    //       this.gameId = localStorage.getItem('gameId');
+    //     } else {
+    //       this.router.navigate(["find-game"]);
+    //     }
+
+    // }else{
+
+    //  //if( state.name == undefined || state.ID == undefined){
+    //       this.gameName = state.name;
+    //       this.gameId = state.ID;
+    //       console.log('try ran');
+    //       localStorage.setItem('gameName', this.gameName);
+    //       localStorage.setItem('gameId', this.gameId);
+       
+    // }
+
+    try{
+      this.gameName = state.name;
+      this.gameId = state.ID;
+
+      console.log('try ran');
+      localStorage.setItem('gameName', this.gameName);
+      localStorage.setItem('gameId', this.gameId);
+    } catch (e){
+      
+
+      if(localStorage.getItem('gameName') != null && localStorage.getItem('gameId') != null) {
+
+        this.gameName = localStorage.getItem('gameName');
+        this.gameId = localStorage.getItem('gameId');
+      } else {
+        this.router.navigate(["find-game"]);
+      }
     }
     console.log("Game Name is " + this.gameName); 
 
     // checks to see if user is currently signed in and then gets their email and id
     if(afAuth.auth.currentUser != null) {
       this.userEmail = afAuth.auth.currentUser.email;
-      this.userId = afAuth.auth.currentUser.uid; // here 
-    } else {
+      this.userId = afAuth.auth.currentUser.uid;
 
-      //send to login page 
-      this.userEmail = "no Email";
-      this.userId = "NlciFleq4i5wRWoeDd2D"; // give it a test case
+      localStorage.setItem('userEmail', this.userEmail);
+      localStorage.setItem('userID', this.userId);
+
+    } else if(localStorage.getItem('userEmail') != null && localStorage.getItem('userID') != null) {
+      this.userEmail = localStorage.getItem('userEmail');
+      this.userId = localStorage.getItem('userID');
+      
+    } else {
+      this.router.navigate(["login"]);
+
     }
     console.log("this is email " + this.userEmail);
 
@@ -108,32 +157,67 @@ export class GameHomePage implements OnInit {
       
 
     }) 
+    console.log('current position');
+
+    this.getPosition();
+   
+    
+
 
     // watches and logs the current user position 
-    geolocation.watchPosition().subscribe((position) => {
+    this.platform.ready().then(()=> {
 
-      //get zoom of map
-      console.log("position ran")
-      if(this.map != undefined) {
-        this.zoom = this.map.getZoom();
-        console.log("zoom is " + this.map.getZoom())
+      geolocation.watchPosition().subscribe((position) => {
 
-      }
-
-      if(position.coords != undefined){
-      console.log("this is position " + position.coords)
-      this.userLat = position.coords.latitude;
-      this.userLng = position.coords.longitude;
-      console.log("position is " + this.userLat + " "  + this.userLng)
-      
-     // this.displayUserInit(); // displays user location]
-     
-     this.updateUser();
-      
-      }
-     
-      
+        //get zoom of map
+        console.log("position ran")
+        if(this.map != undefined) {
+          this.zoom = this.map.getZoom();
+         
+  
+        }
+  
+        if(position.coords != undefined){
+        
+        this.userLat = position.coords.latitude;
+        this.userLng = position.coords.longitude;
+        console.log("position is " + this.userLat + " "  + this.userLng)
+        
+       // this.displayUserInit(); // displays user location]
+       
+       this.updateUser();
+        
+        }
+       
+        
+      })
     })
+    // geolocation.watchPosition().subscribe((position) => {
+
+    //   //get zoom of map
+    //   console.log("position ran")
+    //   if(this.map != undefined) {
+    //     this.zoom = this.map.getZoom();
+       
+
+    //   }
+
+    //   if(position.coords != undefined){
+      
+    //   this.userLat = position.coords.latitude;
+    //   this.userLng = position.coords.longitude;
+    //   console.log("position is " + this.userLat + " "  + this.userLng)
+      
+    //  // this.displayUserInit(); // displays user location]
+     
+    //  this.updateUser();
+      
+    //   }
+     
+      
+    // })
+
+
     
    
 
@@ -168,6 +252,17 @@ export class GameHomePage implements OnInit {
     
   }
 
+  getPosition() {
+    this.geolocation.getCurrentPosition().then((position) => {
+
+      this.userLat = position.coords.latitude;
+      this.userLng = position.coords.longitude;
+      console.log("position is from get " + this.userLat + " "  + this.userLng)
+      this.updateUser();
+    });
+
+  }
+
   showRadius() {
     //let 
   }
@@ -182,7 +277,7 @@ export class GameHomePage implements OnInit {
   }
 
   displayUserInit() {
-    console.log("display user ran");
+    
     if (this.userLat != undefined && this.userLng != undefined && this.map != undefined) {
       // display user on map
     let position = new google.maps.LatLng(this.userLat, this.userLng);
@@ -203,11 +298,11 @@ export class GameHomePage implements OnInit {
     });
     this.markers.push(this.userMarker);
      // displays the objectives on the map
-    console.log("zoom is " + this.map.getZoom())
+    
  
 
     } else {
-      console.log("no location")
+     
       setTimeout(this.displayUserInit, 250);
     }
 
@@ -220,9 +315,10 @@ export class GameHomePage implements OnInit {
   
       // display marker for each location 
 
+      console.log('display function ran');
+
       this.objectivesList.forEach(element => {
-        console.log(element)
-        console.log("logged element")
+       
 
 
 
@@ -230,10 +326,11 @@ export class GameHomePage implements OnInit {
 
         } else{
 
+          console.log('objective list displayed');
+
        // adds marker 
         let latiLong = new google.maps.LatLng(element["Lat"], element['Lng']);
-        console.log("this is latilong")
-        console.log(latiLong)
+       
 
         let marker = new google.maps.Marker({
           map: this.map,
@@ -248,8 +345,7 @@ export class GameHomePage implements OnInit {
           }
         });
         this.markers.push(marker);
-        console.log("markers")
-        console.log(this.markers);
+       
 
       }
       });
@@ -278,8 +374,7 @@ export class GameHomePage implements OnInit {
         }
       })
       
-      console.log("this is user list");
-      console.log(this.userList);
+     
       this.checkList() // checks list user to see if they have joined the game before
 
 
@@ -311,8 +406,7 @@ export class GameHomePage implements OnInit {
 
     if(this.userList != undefined){
     this.userExists = this.userList.some(({Email}) => Email === this.userEmail)
-    console.log({Email : this.userEmail})
-    console.log('does user exist' + this.userExists)
+  
     }
 
   
@@ -325,13 +419,13 @@ export class GameHomePage implements OnInit {
 
       let user = this.userList.find(obj => {
         if(obj.Email === this.userEmail) {
-          console.log("ran 12")
+          
           return obj
         } else {
           return
         }
       })
-      console.log("user is " + user["ID"])
+      
       this.userId = user["ID"]
          
 
@@ -353,7 +447,7 @@ export class GameHomePage implements OnInit {
     // add record for user to collection
     this.firestore.collection('Games').doc(this.gameId).collection('Users').add(record).then(resp => {
       this.userId = resp.id;
-      console.log("id is " + this.userId)
+      
     })
 
 
@@ -363,8 +457,7 @@ export class GameHomePage implements OnInit {
   completeBtnClick(objName, objLat, objLng){
     // runs when user completes an objective
     
-    console.log("user email" + this.userEmail)
-    console.log("USer Id is " + this.userId)
+   
 
    
     // retrieves object list from firebase
@@ -380,7 +473,7 @@ export class GameHomePage implements OnInit {
 
     //if the user is within 1000 meters of objective allows them to complete it
     if(dist <= 1000){
-    console.log("got List")
+   
 
       //checks if there is an objective list 
       if (this.completedObjList != undefined){
@@ -402,9 +495,7 @@ export class GameHomePage implements OnInit {
 
   // returns the distance between marker and the user location
   getDistance(objLat, objLng) {
-    console.log("cords are " + objLat + objLng)
-    console.log("cords are " +this.userLat + this.userLng)
-    console.log(new google.maps.LatLng(this.userLat, this.userLng));
+    
     return google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(this.userLat, this.userLng), new google.maps.LatLng(objLat, objLng));
     
   }
@@ -432,15 +523,10 @@ export class GameHomePage implements OnInit {
   scoreBtnClick() {
 
     // sends user name and id to score page
-    const navigationExtras : NavigationExtras = {
-      state: {
-        name: this.gameName,
-        ID: this.gameId
-      }
-    }
 
 
-    this.router.navigate(['scoreboard'], navigationExtras);
+    //this.router.navigate(['scoreboard'], navigationExtras);
+    this.navCtrl.navigateRoot(['scoreboard'], {animationDirection:'forward', state: {name: this.gameName, ID: this.gameId }});
     this.closeNav();
   }
 
@@ -450,22 +536,21 @@ export class GameHomePage implements OnInit {
   chatBtnClick() {
 
     // sends user name and id to chat page
-    const navigationExtras : NavigationExtras = {
-      state: {
-        name : this.gameName,
-        ID : this.gameId
-      }
-    }
-    this.router.navigate(['chat'], navigationExtras);
+    //this.router.navigate(['chat'], navigationExtras);
+    this.navCtrl.navigateRoot(['chat'], {animationDirection:'forward', state: {name: this.gameName, ID: this.gameId }});
+    
+
     this.closeNav();
     
   }
 
   leaveBtnClick() {
 
-    this.router.navigate(["login"]);
-    this.closeNav();
     
+    this.navCtrl.navigateRoot(['login'], {animationDirection:'forward'});
+    //this.router.navigate(["login"]);
+    this.closeNav();
+
   }
 
 

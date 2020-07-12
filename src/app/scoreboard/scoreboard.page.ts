@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Router} from '@angular/router';
 import { Injectable } from '@angular/core';
 
+import { NavController} from '@ionic/angular';
 
 
 @Injectable({
@@ -36,18 +37,39 @@ export class ScoreboardPage implements OnInit {
 
 
   // gets game name and is from previous page 
-  constructor(private router: Router, private firestore: AngularFirestore) { 
+  constructor(private router: Router, private firestore: AngularFirestore, private navCtrl : NavController) { 
     const navigation = this.router.getCurrentNavigation();
     const state = navigation.extras.state as {
       name: string;
       ID : string;
     };
-    try {
-      this.gameId = state.ID
+
+
+    // try {
+    //   this.gameId = state.ID
+    //   this.gameName = state.name;
+    // } catch { // catches error if page does not recieve values 
+    //   this.gameName = "Error";
+    //   this.gameId = "jKYNMktYB2gyPomrVpFZ";
+    // }
+
+    try{
       this.gameName = state.name;
-    } catch { // catches error if page does not recieve values 
-      this.gameName = "Error";
-      this.gameId = "jKYNMktYB2gyPomrVpFZ";
+      this.gameId = state.ID;
+
+      console.log('try ran');
+      localStorage.setItem('gameName', this.gameName);
+      localStorage.setItem('gameId', this.gameId);
+    } catch (e){
+      
+
+      if(localStorage.getItem('gameName') != null && localStorage.getItem('gameId') != null) {
+
+        this.gameName = localStorage.getItem('gameName');
+        this.gameId = localStorage.getItem('gameId');
+      } else {
+        this.router.navigate(["find-game"]);
+      }
     }
 
 
@@ -156,7 +178,8 @@ export class ScoreboardPage implements OnInit {
 
   //redirects to game home page
   backBtnClick() {
-    this.router.navigate(['game-home']);
+    //this.router.navigate(['game-home']);
+    this.navCtrl.navigateRoot(['game-home'], {animationDirection:'forward', state: {name: this.gameName, ID: this.gameId }});
   }
 
 }

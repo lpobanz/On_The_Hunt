@@ -21,12 +21,15 @@
     
 
     <ion-label> The distance in meters to complete an objective: </ion-label>
-    <ion-input placeholder=" default distance is 1000" type="number" (focusout)="inputCheck()" [(ngModel)]="data.distance" required></ion-input>
+    
     <ion-item class="itm">
-    <ion-range min="50" max="5000" pin="true" step="50" snaps="true" ticks="false" value="1000" [(ngModel)]="data.distance">
+      <div style="display: block; width: 100%;">
+        <ion-input class="distInput" placeholder=" default distance is 1000" type="number" (focusout)="inputCheck()" [(ngModel)]="data.distance" required></ion-input>
+     <ion-range min="50" max="5000" pin="true" step="50" snaps="true" ticks="false" value="1000" [(ngModel)]="data.distance">
         <ion-label slot="start">50m</ion-label>
         <ion-label slot="end">5000m</ion-label>
     </ion-range>
+  </div>
    </ion-item>
 
     <ion-button (click)="createBtnClick()"> Create Game</ion-button>

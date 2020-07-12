@@ -3,6 +3,9 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Router, NavigationExtras} from '@angular/router';
 import { Injectable } from '@angular/core';
 
+import {NavController} from '@ionic/angular'; 
+import { HomePage } from '../home/home.page';
+
 
 
 @Injectable({
@@ -23,12 +26,15 @@ public initGameList: any[];
 public gameName: string;
 public gameId: string;
 
-constructor(private firestore: AngularFirestore, private router : Router) {
+constructor(private firestore: AngularFirestore, private router : Router, private navCtrl: NavController) {
+
+  
 }
   
   
 
   ngOnInit() {
+    //localStorage.clear();
 
     console.log("test");
 
@@ -55,6 +61,9 @@ constructor(private firestore: AngularFirestore, private router : Router) {
       console.log(this.gameList);
 
     })
+  }
+  ionViewWillEnter() {
+   localStorage.clear();
   }
 
   initializeItems(): void {
@@ -98,6 +107,9 @@ constructor(private firestore: AngularFirestore, private router : Router) {
   }
 
 
+  backBtnClk() {
+    this.router.navigate(['login']);
+  }
 
   
 
@@ -118,9 +130,15 @@ constructor(private firestore: AngularFirestore, private router : Router) {
     };
 
 
-  
+    this.navCtrl.navigateRoot(['game-home'], navigationExtras);
+
+
+
    //navigates to the game home page
-    this.router.navigate(["game-home"], navigationExtras);
+   
+    //this.router.navigate(["game-home"], navigationExtras);
+    
+    
   }
 
 

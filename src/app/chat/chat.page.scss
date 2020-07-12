@@ -75,7 +75,7 @@ input[type=text] , input[type=password]  {
     height: calc(100% - 120px);
     overflow: scroll;
     width: 100%;
-    --background: #d8ccc2;
+    --ion-background-color: #d8ccc2;
 }
 .content {
     --overflow: hidden;

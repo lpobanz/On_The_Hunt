@@ -1,10 +1,11 @@
-<ion-header>
-  <ion-toolbar>
+<ion-header >
+  <ion-toolbar class='banner'>
+      <ion-button class="backBtn" (click) = "backBtnClk()"> Back</ion-button>
     <ion-title class="head">Find Game</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content >
+<ion-content class='cont' >
   <body class="bod">
 <ion-searchbar showcancelbutton="" class="search" (ionInput)="filterList($event)"></ion-searchbar>
 

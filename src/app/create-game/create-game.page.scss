@@ -10,10 +10,25 @@ input[type=text] , input[type=password]  {
     
     
   }
+
+  .distInput{
+    border: solid 1px grey ;
+    color: grey;
+    width: 60%;
+   // padding: 0px;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    border-radius: 20px;
+
+  }
   .itm{ 
       --background: rgba(204, 204, 204, 0); //#ec944b;
-      border-top: 1px solid #ccc;
-      border-bottom: 1px solid #ccc;
+      border: 1px solid grey;
+      border-radius: 30px;
+     // border-bottom: 1px solid grey;
   }
 
   .head{

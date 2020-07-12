@@ -2,6 +2,7 @@ body {
     background-position: center;
 
     background: url("../../assets/img/City_Background.JPG");
+
     background-size: cover;
     background-repeat: no-repeat;
     background-color: #5a5b618a;
@@ -9,6 +10,9 @@ body {
     background-blend-mode: multiply;
     //background: linear-gradient(rgba(249, 119, 76,.75), rgba(128, 42, 12,.85));
 }
+
+
+
 
 ion-toolbar{
     --background: #4a4d58;
